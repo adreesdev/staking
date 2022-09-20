@@ -51,19 +51,20 @@ const StakingCalculate = ({ Duration, stakingContract }) => {
 		enabled: isConnected,
 	});
 
-	const { config: tokenApprove } = usePrepareContractWrite({
-		...tokenContract,
-		functionName: "approve",
-		args: [Environment.StakingAddress, tokenRead[1]],
-	});
+	// const { config: tokenApprove } = usePrepareContractWrite({
+	// 	...tokenContract,
+	// 	functionName: "approve",
+	// 	args: [Environment.StakingAddress, tokenRead[1]],
+	// 	enabled: isConnected,
+	// });
 
-	const {
-		data: tokenApproved,
-		isSuccess: approveSuccess,
-		error: approveError,
-		isError: approveisError,
-		write: approveTokens,
-	} = useContractWrite(tokenApprove);
+	// const {
+	// data: tokenApproved,
+	// 	isSuccess: approveSuccess,
+	// 	error: approveError,
+	// 	isError: approveisError,
+	// 	write: approveTokens,
+	// } = useContractWrite(tokenApprove);
 
 	const { config: tokenStake } = usePrepareContractWrite({
 		...stakingContract,
@@ -79,13 +80,13 @@ const StakingCalculate = ({ Duration, stakingContract }) => {
 		write: stakeTokens,
 	} = useContractWrite(tokenStake);
 
-	useEffect(() => {
-		if (approveSuccess) toast(tokenApproved);
-		if (approveisError) toast(approveError.message);
-		if (stakeSuccess) toast(tokenStaked);
-		if (stakeisError) toast(stakeError.message);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [approveSuccess, approveisError, stakeSuccess, stakeisError]);
+	// useEffect(() => {
+	// if (approveSuccess) toast(tokenApproved);
+	// if (approveisError) toast(approveError.message);
+	// 	if (stakeSuccess) toast(tokenStaked);
+	// 	if (stakeisError) toast(stakeError.message);
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [approveSuccess, approveisError, stakeSuccess, stakeisError]);
 
 	const handleStake = () => {
 		if (amount < 100) toast("Amount is less than 100.");
@@ -193,7 +194,7 @@ const StakingCalculate = ({ Duration, stakingContract }) => {
 					</Typography>
 				</Box>
 				<Box px={5} py={3}>
-					{amount <= +tokencoming(tokenRead[0]) ? (
+					{amount <= (isConnected && +tokencoming(tokenRead[0])) ? (
 						<Button
 							className="btn"
 							disabled={!isConnected}
@@ -237,7 +238,7 @@ const StakingCalculate = ({ Duration, stakingContract }) => {
 										"linear-gradient(to bottom right, #6247AA , #A594F9)",
 								},
 							}}
-							onClick={() => approveTokens()}
+							// onClick={() => approveTokens()}
 						>
 							Approve
 						</Button>
